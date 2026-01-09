@@ -1,8 +1,12 @@
 import express from 'express';
+import { connectDB } from '#db';
 // import {} from "./routes";
 // import '#db';
 // import {} from "./middlewares"
 
+// Connect to MongoDB BEFORE starting the server
+// Top-level await works because we are using ES modules
+await connectDB();
 const app = express();
 const port = 3000;
 
