@@ -1,5 +1,7 @@
 import express from 'express';
 import { connectDB } from '#db';
+
+import { usersRouter } from '#routes';
 // import {} from "./routes";
 // import '#db';
 // import {} from "./middlewares"
@@ -15,6 +17,8 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.send('Hello World');
 });
+
+app.use('/users', usersRouter);
 
 console.log('Hello World');
 
