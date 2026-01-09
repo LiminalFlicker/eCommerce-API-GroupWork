@@ -21,6 +21,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', usersRouter);
+// app.use('/categories', categoryRouter);
 
 app.use('*splat', (req, res) => {
   throw new Error('Not found', { cause: 404 });
