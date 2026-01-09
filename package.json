@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "express": "^5.1.0",
-    "mongoose": "^8.16.4",
+    "mongoose": "^8.21.0",
     "zod": "^4.3.5"
   }
 }
