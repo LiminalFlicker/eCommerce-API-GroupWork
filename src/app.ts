@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', usersRouter);
+// app.use('/categories', categoryRouter);
 
 console.log('Hello World');
 
