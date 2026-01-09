@@ -1,15 +1,23 @@
 import express from 'express';
-// import {} from "./routes";
-// import '#db';
+import { productRouter } from '#routes';
+import { connectDB } from '#db';
 // import {} from "./middlewares"
 
 const app = express();
 const port = 3000;
 
+connectDB();
+
 app.use(express.json());
+
+app.use('/products', productRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World');
+});
+
+app.use('*splat', (req, res) => {
+  throw new Error('Not found', { cause: 404 });
 });
 
 console.log('Hello World');

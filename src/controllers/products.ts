@@ -4,7 +4,7 @@ import type { productInputSchema, productSchema } from '#schemas';
 import { z } from 'zod/v4';
 
 type ProductInputDTO = z.infer<typeof productInputSchema>;
-type ProductDTO = z.infer<typeof productScheme>;
+type ProductDTO = z.infer<typeof productSchema>;
 
 export async function getProducts(req: Request, res: Response<{}, ProductDTO>) {
   const products = await Product.find();
