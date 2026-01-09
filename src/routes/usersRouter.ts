@@ -6,11 +6,13 @@
 
 import { Router } from 'express';
 import { getUserById, getUsers, createUser, updateUser, deleteUser } from '#controllers';
+import { validateBodyZod } from '#middlewares';
+import { userInputSchema } from '#schemas';
 
 const usersRouter = Router();
 usersRouter.get('/', getUsers);
-usersRouter.post('/', createUser);
+usersRouter.post('/', validateBodyZod(userInputSchema), createUser);
 usersRouter.get('/:id', getUserById);
-usersRouter.put('/:id', updateUser);
+usersRouter.put('/:id', validateBodyZod(userInputSchema), updateUser);
 usersRouter.delete('/:id', deleteUser);
 export default usersRouter;
