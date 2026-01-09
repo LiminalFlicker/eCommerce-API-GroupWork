@@ -1,6 +1,6 @@
 import express from 'express';
 import { connectDB } from '#db';
-
+import { errorHandler } from '#middlewares';
 import { usersRouter, productRouter } from '#routes';
 // import {} from "./routes";
 // import '#db';
@@ -26,5 +26,7 @@ app.use('*splat', (req, res) => {
   throw new Error('Not found', { cause: 404 });
 });
 console.log('Hello World');
+
+app.use(errorHandler);
 
 app.listen(port, () => console.log(`\x1b[34mMain app listening at http://localhost:${port}\x1b[0m`));
