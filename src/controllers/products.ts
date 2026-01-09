@@ -7,7 +7,12 @@ type ProductInputDTO = z.infer<typeof productInputSchema>;
 type ProductDTO = z.infer<typeof productSchema>;
 
 export async function getProducts(req: Request, res: Response<{}, ProductDTO>) {
-  const products = await Product.find();
+  const {
+    query: { categoryId }
+  } = req;
+
+  const products = categoryId === undefined ? await Product.find() : await Product.find({ categoryId: categoryId });
+
   res.json(products);
 }
 
@@ -17,12 +22,21 @@ export async function createProduct(req: Request, res: Response) {
 }
 
 export async function getProductById(req: Request<{ id: string }>, res: Response<ProductDTO>) {
-  const product = await Product.findById(req.params.id);
+  const {
+    params: { id }
+  } = req;
+
+  const product = await Product.findById(id);
   if (!product) throw new Error('Product not found', { cause: 404 });
   res.json(product);
 }
 
 /* Todo: To be implemented */
-export async function updateProduct(req: Request, res: Response) {}
+export async function updateProduct(req: Request, res: Response) {
+  const {
+    body: { title, content, userId },
+    params: { id }
+  } = req;
+}
 /* Todo: To be implemented */
 export async function deleteProduct(req: Request, res: Response) {}
