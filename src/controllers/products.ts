@@ -25,7 +25,6 @@ export async function getProducts(req: Request, res: Response<{}, ProductDTO>) {
   res.json(products);
 }
 
-/* # Todo: FR016	Product–Category Integrity Create Product must fail if categoryId does not reference an existing Category.*/
 /**
  * # POST /products
  * # Add new product to database
@@ -37,9 +36,8 @@ export async function createProduct(req: Request, res: Response) {
     body: { categoryId }
   } = req;
 
-  const category = Category.findById(categoryId).lean();
-  console.log(category);
-  if (!category) throw new Error('Add product failed: categoryId is not existing', { cause: 404 });
+  const category = await Category.findById(categoryId);
+  if (!category) throw new Error('Add product failed: categoryId is not existing', { cause: 406 });
 
   const product = await Product.create<ProductInputDTO>(req.body);
   res.json(product);
@@ -61,7 +59,6 @@ export async function getProductById(req: Request<{ id: string }>, res: Response
   res.json(product);
 }
 
-/* # Todo: FR016	Product–Category Integrity Create Product must fail if categoryId does not reference an existing Category.*/
 /**
  * # PUT /products/:id
  * # Update product
@@ -76,6 +73,9 @@ export async function updateProduct(req: Request<{ id: string }, ProductInputDTO
 
   const product = await Product.findById(id);
   if (!product) throw new Error('Product not found', { cause: 404 });
+
+  const category = await Category.findById(categoryId);
+  if (!category) throw new Error('Add product failed: categoryId is not existing', { cause: 406 });
 
   product.name = name;
   product.description = description;
