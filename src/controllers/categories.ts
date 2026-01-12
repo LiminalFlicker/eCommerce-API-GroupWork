@@ -1,11 +1,10 @@
 import type { RequestHandler } from 'express';
 import { Category } from '#models';
-import { createCategorySchema, updateCategorySchema, categorySchema } from '../schemas/category.ts';
+import { categoryInputSchema, categorySchema } from '../schemas/category.ts';
 import { z } from 'zod/v4';
 
 // DTOs (Request / Response)
-type CreateCategoryDTO = z.infer<typeof createCategorySchema>['body'];
-type UpdateCategoryDTO = z.infer<typeof updateCategorySchema>['body'];
+type CategoryInputDTO = z.infer<typeof categoryInputSchema>;
 type CategoryDTO = z.infer<typeof categorySchema>;
 
 // GET /categories
@@ -16,19 +15,19 @@ export const getCategories: RequestHandler<{}, CategoryDTO[]> = async (req, res)
 
 // GET /categories/:id
 export const getCategoryById: RequestHandler<{ id: string }, CategoryDTO> = async (req, res) => {
-  const category = await Category.findById(req.params.id).lean();
+  const category = await Category.findById(req.params.id);
   if (!category) throw new Error('Category not found', { cause: 404 });
   res.json(category);
 };
 
 // POST /categories
-export const createCategory: RequestHandler<{}, CategoryDTO, CreateCategoryDTO> = async (req, res) => {
+export const createCategory: RequestHandler<{}, CategoryDTO, CategoryInputDTO> = async (req, res) => {
   const created = await Category.create({ name: req.body.name });
   res.status(201).json(created);
 };
 
 // PUT /categories/:id
-export const updateCategory: RequestHandler<{ id: string }, CategoryDTO, UpdateCategoryDTO> = async (req, res) => {
+export const updateCategory: RequestHandler<{ id: string }, CategoryDTO, CategoryInputDTO> = async (req, res) => {
   const {
     body: { name },
     params: { id }

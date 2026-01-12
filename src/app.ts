@@ -1,7 +1,7 @@
 import express from 'express';
 import { connectDB } from '#db';
 import { errorHandler } from '#middlewares';
-import { usersRouter, productRouter } from '#routes';
+import { usersRouter, productRouter, categoryRouter } from '#routes';
 // import {} from "./routes";
 // import '#db';
 // import {} from "./middlewares"
@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', usersRouter);
-// app.use('/categories', categoryRouter);
+app.use('/categories', categoryRouter);
 
 app.use('*splat', (req, res) => {
   throw new Error('Not found', { cause: 404 });
