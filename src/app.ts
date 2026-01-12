@@ -15,6 +15,8 @@ const port = 3000;
 app.use(express.json());
 
 app.use('/products', productRouter);
+app.use('/users', usersRouter);
+app.use('/categories', categoryRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World');
@@ -26,7 +28,6 @@ app.use('/categories', categoryRouter);
 app.use('*splat', (req, res) => {
   throw new Error('Not found', { cause: 404 });
 });
-console.log('Hello World');
 
 app.use(errorHandler);
 
