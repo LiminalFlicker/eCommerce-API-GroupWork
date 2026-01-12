@@ -6,6 +6,11 @@ import { Types } from 'mongoose';
 // ObjectId kommt im Request immer als STRING
 export const objectIdSchema = z.string().refine(val => Types.ObjectId.isValid(val), { message: 'Invalid id format' });
 
+// für validateParamsZod(req.params)
+export const categoryParamsSchema = z.strictObject({
+  id: objectIdSchema
+});
+
 // POST /categories  (req.body-schema)
 export const categoryInputSchema = z.strictObject({
   name: z.string({ error: 'Category name must be a String' }).trim().min(2, { message: 'need more than 2 characters' })
@@ -13,6 +18,11 @@ export const categoryInputSchema = z.strictObject({
 
 export const createCategorySchema = z.strictObject({
   body: categoryInputSchema
+});
+
+// PUT Body
+export const categoryUpdateBodySchema = z.strictObject({
+  name: z.string().trim().min(2).optional()
 });
 
 // PUT /categories/:id (Request-Schema)
@@ -32,7 +42,7 @@ export const categoryIdParamSchema = z.strictObject({
   })
 });
 
-// Response Schema for Category
+// Response Schema
 export const categorySchema = z.strictObject({
   _id: z.instanceof(Types.ObjectId),
   ...categoryInputSchema.shape,

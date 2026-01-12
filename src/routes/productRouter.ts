@@ -8,5 +8,7 @@ export const productRouter = Router();
 productRouter.get('/', getProducts);
 productRouter.post('/', validateBodyZod(productInputSchema), createProduct);
 productRouter.get('/:id', getProductById);
+
+export default productRouter;
 productRouter.put('/:id', validateBodyZod(productInputSchema), updateProduct);
 productRouter.delete('/:id', deleteProduct);
