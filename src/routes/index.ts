@@ -3,3 +3,4 @@ export { default as usersRouter } from './usersRouter.ts';
 //export * from './productRouter.ts';
 export { default as categoryRouter } from './categoryRouter.ts';
 export { default as productRouter } from './productRouter.ts';
+export { default as ordersRouter } from './ordersRouter.ts';

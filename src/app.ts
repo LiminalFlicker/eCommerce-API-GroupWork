@@ -1,7 +1,7 @@
 import express from 'express';
 import { connectDB } from '#db';
 import { errorHandler } from '#middlewares';
-import { usersRouter, productRouter, categoryRouter } from '#routes';
+import { usersRouter, productRouter, categoryRouter, ordersRouter } from '#routes';
 
 // Connect to MongoDB BEFORE starting the server
 // Top-level await works because we are using ES modules
@@ -14,6 +14,7 @@ app.use(express.json());
 app.use('/products', productRouter);
 app.use('/users', usersRouter);
 app.use('/categories', categoryRouter);
+app.use('/orders', ordersRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World');
