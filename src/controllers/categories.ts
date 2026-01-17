@@ -7,23 +7,33 @@ import { z } from 'zod/v4';
 type CategoryInputDTO = z.infer<typeof categoryInputSchema>;
 type CategoryDTO = z.infer<typeof categorySchema>;
 
+const normalizeId = (doc: any) => {
+  if (!doc) return doc;
+  return {
+    ...doc,
+    id: String(doc._id),
+    _id: undefined,
+    __v: undefined
+  };
+};
+
 // GET /categories
 export const getCategories: RequestHandler<{}, CategoryDTO[]> = async (req, res) => {
   const categories = await Category.find().lean();
-  res.json(categories);
+  res.json(categories.map(normalizeId));
 };
 
 // GET /categories/:id
 export const getCategoryById: RequestHandler<{ id: string }, CategoryDTO> = async (req, res) => {
-  const category = await Category.findById(req.params.id);
+  const category = await Category.findById(req.params.id).lean();
   if (!category) throw new Error('Category not found', { cause: 404 });
-  res.json(category);
+  res.json(normalizeId(category));
 };
 
 // POST /categories
 export const createCategory: RequestHandler<{}, CategoryDTO, CategoryInputDTO> = async (req, res) => {
   const created = await Category.create({ name: req.body.name });
-  res.status(201).json(created);
+  res.status(201).json(normalizeId(created.toObject()));
 };
 
 // PUT /categories/:id
@@ -42,7 +52,7 @@ export const updateCategory: RequestHandler<{ id: string }, CategoryDTO, Categor
   await updated.save();
 
   // Wenn ihr lean() / toObject() in Responses mögt:
-  res.json(updated.toObject());
+  res.json(normalizeId(updated.toObject()));
 };
 
 // DELETE /categories/:id
