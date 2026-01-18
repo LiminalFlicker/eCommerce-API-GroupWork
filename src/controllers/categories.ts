@@ -37,7 +37,10 @@ export const createCategory: RequestHandler<{}, CategoryDTO, CategoryInputDTO> =
 };
 
 // PUT /categories/:id
-export const updateCategory: RequestHandler<{ id: string }, CategoryDTO, CategoryInputDTO> = async (req, res) => {
+export const updateCategory: RequestHandler<{ id: string }, CategoryDTO, Partial<CategoryInputDTO>> = async (
+  req,
+  res
+) => {
   const {
     body: { name },
     params: { id }

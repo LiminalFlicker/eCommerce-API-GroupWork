@@ -23,7 +23,7 @@ export function validateBodyZod(zodSchema: ZodObject) {
   };
 }
 
-// souher
+// souher, nur für URL Parameter
 export function validateParamsZod(zodSchema: ZodObject) {
   return (req: Request, res: Response, next: NextFunction) => {
     const { data, error, success } = zodSchema.safeParse(req.params);
