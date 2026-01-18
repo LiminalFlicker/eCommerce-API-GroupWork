@@ -1,7 +1,8 @@
 import { type RequestHandler, type Response, type Request } from 'express';
 import { Product, Category } from '#models';
-import type { productInputSchema, productSchema } from '#schemas';
+import { productInputSchema, type productSchema } from '#schemas';
 import { z } from 'zod/v4';
+import { nativeEnum } from 'zod/v3';
 
 type ProductInputDTO = z.infer<typeof productInputSchema>;
 type ProductDTO = z.infer<typeof productSchema>;
@@ -22,7 +23,22 @@ export async function getProducts(req: Request, res: Response<{}, ProductDTO>) {
       ? await Product.find().populate('categoryId').lean()
       : await Product.find({ categoryId: categoryId }).populate('categoryId').lean();
 
-  res.json(products);
+  const respObj = products.map(doc => {
+    let { _id, __v, categoryId, ...resp } = doc;
+
+    let { _id: catId, __v: cat__v, ...category } = categoryId as any;
+
+    return {
+      id: doc._id,
+      ...resp,
+      categoryId: {
+        id: catId,
+        ...category
+      }
+    };
+  });
+
+  res.json(respObj);
 }
 
 /**
@@ -40,6 +56,7 @@ export async function createProduct(req: Request, res: Response) {
   if (!category) throw new Error('Add product failed: categoryId is not existing', { cause: 406 });
 
   const product = await Product.create<ProductInputDTO>(req.body);
+
   res.json(product);
 }
 

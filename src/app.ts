@@ -2,9 +2,6 @@ import express from 'express';
 import { connectDB } from '#db';
 import { errorHandler } from '#middlewares';
 import { usersRouter, productRouter, categoryRouter, ordersRouter } from '#routes';
-// import {} from "./routes";
-// import '#db';
-// import {} from "./middlewares"
 
 // Connect to MongoDB BEFORE starting the server
 // Top-level await works because we are using ES modules
@@ -22,9 +19,6 @@ app.use('/orders', ordersRouter);
 app.get('/', (req, res) => {
   res.send('Hello World');
 });
-
-app.use('/users', usersRouter);
-app.use('/categories', categoryRouter);
 
 app.use('*splat', (req, res) => {
   throw new Error('Not found', { cause: 404 });
