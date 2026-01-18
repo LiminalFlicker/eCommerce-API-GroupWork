@@ -44,9 +44,8 @@ export const categoryIdParamSchema = z.strictObject({
 
 // Response Schema
 export const categorySchema = z.strictObject({
-  _id: z.instanceof(Types.ObjectId),
+  id: z.string(),
   ...categoryInputSchema.shape,
   createdAt: z.date(),
-  updatedAt: z.date(),
-  __v: z.number()
+  updatedAt: z.date()
 });
